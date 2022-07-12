@@ -1,0 +1,50 @@
+.draganddroparea > * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.draganddroparea {
+  width: 100%;
+}
+
+  .draganddroparea .container {
+    display: flex;
+    width: 100%;
+  }
+
+  .draganddroparea .dropArea {
+    width: 100%;
+    height: 100%;
+    border: solid 2px rgba(93, 104, 105, 0.62);
+    padding-top: 25px;
+    padding-bottom: 25px;
+    transition: background-color .5s, padding .5s;
+    -webkit-transition: background-color .5s, padding .5s;
+    -moz-transition: background-color .5s, padding .5s;
+    -o-transition: background-color .5s, padding .5s;
+    font-size: 20px;
+    color: black;
+  }
+
+  .draganddroparea .textIcon {
+    width: 100%;
+  }
+
+  .draganddroparea .text {
+    width: 100%;
+    text-align: center;
+    font-family: sans-serif;
+    transition: font-size .5s, color .5s;
+    -moz-transition: font-size .5s, color .5s;
+    -webkit-transition: font-size .5s, color .5s;
+    -o-transition: font-size .5s, color .5s;
+  }
+
+  .draganddroparea .dropAreaHover {
+    background-color: #c0bebe54;
+    font-size: 25px !important;
+    padding-top: 23px;
+    padding-bottom: 23px;
+    color: #939393;
+  }
