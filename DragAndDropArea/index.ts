@@ -1,6 +1,8 @@
 import { IInputs, IOutputs } from './generated/ManifestTypes';
-import { FileUploadArea, IFileUploadAreaProps } from './components/FileUploadArea';
+import { FileUploadArea } from './components/FileUploadArea';
 import * as React from 'react';
+
+import CrmService from './services/CrmService';
 
 export class DragAndDropArea implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   private theComponent: ComponentFramework.ReactControl<IInputs, IOutputs>;
@@ -31,13 +33,10 @@ export class DragAndDropArea implements ComponentFramework.ReactControl<IInputs,
    * @returns ReactElement root react element for the control
    */
   public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
-    const props: IFileUploadAreaProps = {
-      context,
-    };
+    CrmService.setContext(context);
 
     return React.createElement(
       FileUploadArea,
-      props,
     );
   }
 

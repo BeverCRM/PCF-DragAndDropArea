@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { IInputs } from '../generated/ManifestTypes';
 
-import FileHelper from '../helpers/FileHelper';
+import CrmService from '../services/CrmService';
 
-export interface IFileUploadAreaProps {
-  context: ComponentFramework.Context<IInputs>;
-}
+export interface IFileUploadAreaProps { }
 
 interface IFileUploadAreaState {
   dragCounter: number;
@@ -34,41 +31,10 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
   async drop(event: React.DragEvent) {
     event.preventDefault();
     const files = event.dataTransfer?.files;
-    await this.handleFiles(files);
+    await CrmService.uploadFiles(files);
 
     this.setState({ dragCounter: 0 });
-    const _parent: any = parent;
-    _parent.Xrm.Page.getControl('Timeline').refresh();
-  }
-
-  async handleFiles(files: FileList) {
-    for (const file of Array.from(files)) {
-      await this.uploadFile(file);
-    }
-  }
-
-  async uploadFile(file: File) {
-    try {
-      const buffer: ArrayBuffer = await FileHelper.readFileAsArrayBufferAsync(file);
-      const body: string = FileHelper.arrayBufferToBase64(buffer);
-
-      const _context = this.props.context as any;
-      const { entityTypeName, entityId } = _context.page;
-
-      const data: any = {
-        'subject': '',
-        'filename': file.name,
-        'documentbody': body,
-        'objecttypecode': entityTypeName,
-      };
-
-      data[`objectid_${entityTypeName}@odata.bind`] = `/${entityTypeName}s(${entityId})`;
-
-      await this.props.context.webAPI.createRecord('annotation', data);
-    }
-    catch (ex: any) {
-      console.error(ex.message);
-    }
+    CrmService.refreshTimeline();
   }
 
   public render(): React.ReactNode {
