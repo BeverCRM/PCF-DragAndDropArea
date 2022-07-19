@@ -16,7 +16,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     };
   }
 
-  dragOver = (event: React.DragEvent) => {
+  dragOver(event: React.DragEvent) {
     event.preventDefault();
   }
 

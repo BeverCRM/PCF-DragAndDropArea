@@ -39,7 +39,7 @@ export default {
   },
 
   refreshTimeline() {
-    const _parent: any = parent;
-    _parent.Xrm.Page.getControl('Timeline').refresh();
+    // @ts-ignore
+    parent.Xrm.Page.getControl('Timeline').refresh();
   },
 };
