@@ -8,19 +8,14 @@ export default {
     _context = context;
   },
 
-  async uploadFiles(files: FileList) {
-    for (const file of Array.from(files)) {
-      await this.uploadFile(file);
-    }
-  },
-
   async uploadFile(file: File) {
     try {
       const buffer: ArrayBuffer = await FileHelper.readFileAsArrayBufferAsync(file);
       const body: string = FileHelper.arrayBufferToBase64(buffer);
-
       // @ts-ignore
       const { entityTypeName, entityId } = _context.page;
+      const entityMetadata =
+      await _context.utils.getEntityMetadata(entityTypeName, entityId);
 
       const data: any = {
         'subject': '',
@@ -29,9 +24,11 @@ export default {
         'objecttypecode': entityTypeName,
       };
 
-      data[`objectid_${entityTypeName}@odata.bind`] = `/${entityTypeName}s(${entityId})`;
+      data[`objectid_${entityTypeName}@odata.bind`] =
+      `/${entityMetadata.EntitySetName}(${entityId})`;
 
       await _context.webAPI.createRecord('annotation', data);
+
     }
     catch (ex: any) {
       console.error(ex.message);
@@ -40,6 +37,6 @@ export default {
 
   refreshTimeline() {
     // @ts-ignore
-    parent.Xrm.Page.getControl('Timeline').refresh();
+    parent.Xrm.Page.getControl('Timeline')?.refresh();
   },
 };

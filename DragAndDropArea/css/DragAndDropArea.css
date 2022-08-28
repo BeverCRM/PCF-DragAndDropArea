@@ -29,8 +29,14 @@
 
   .draganddroparea .textIcon {
     width: 100%;
+    text-align: center;
   }
-
+  .spinnerText{
+    font-size: initial;
+  }
+  .ms-Spinner{
+    margin-top: 6px;
+  }
   .draganddroparea .text {
     width: 100%;
     text-align: center;
