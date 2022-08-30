@@ -31,12 +31,15 @@
     width: 100%;
     text-align: center;
   }
-  .spinnerText{
+
+  .draganddroparea .spinnerText{
     font-size: initial;
   }
-  .ms-Spinner{
+
+  .draganddroparea .ms-Spinner{
     margin-top: 6px;
   }
+
   .draganddroparea .text {
     width: 100%;
     text-align: center;

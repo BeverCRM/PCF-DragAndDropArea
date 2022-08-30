@@ -6,7 +6,7 @@ export interface IFileUploadAreaProps { }
 
 interface IFileUploadAreaState {
   dragCounter: number;
-  spinner: boolean;
+  isLoading: boolean;
   importedFilesCount: number
   filesCount: number;
 }
@@ -17,7 +17,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
 
     this.state = {
       dragCounter: 0,
-      spinner: false,
+      isLoading: false,
       importedFilesCount: 0,
       filesCount: 0,
     };
@@ -39,18 +39,18 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     event.preventDefault();
 
     const files = event.dataTransfer?.files;
-    this.setState({ spinner: true, filesCount: Array.from(files).length });
+    this.setState({ isLoading: true, filesCount: Array.from(files).length });
     for (const file of Array.from(files)) {
       await CrmService.uploadFile(file);
       this.setState({ importedFilesCount: this.state.importedFilesCount + 1 });
     }
 
-    this.setState({ dragCounter: 0, spinner: false, importedFilesCount: 0 });
+    this.setState({ dragCounter: 0, isLoading: false, importedFilesCount: 0 });
     CrmService.refreshTimeline();
   }
 
   public render(): React.ReactNode {
-    const { filesCount, importedFilesCount, spinner } = this.state;
+    const { filesCount, importedFilesCount, isLoading } = this.state;
 
     return (
       <div className="draganddroparea">
@@ -62,7 +62,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
             onDrop={this.drop.bind(this)}
             className={`dropArea 
               ${this.state.dragCounter > 0 ? 'dropAreaHover' : ''}`}
-          >{spinner
+          >{isLoading
               ? <>
                 <div className="textIcon">
                   <p className='spinnerText'>
