@@ -37,6 +37,8 @@ export class DragAndDropArea implements ComponentFramework.ReactControl<IInputs,
 
     return React.createElement(
       FileUploadArea,
+      // @ts-ignore
+      context.page,
     );
   }
 
