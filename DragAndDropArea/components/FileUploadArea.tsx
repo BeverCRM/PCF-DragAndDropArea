@@ -57,7 +57,8 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     fetch(`${parent.Xrm.Utility.getGlobalContext()
       .getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${entityTypeName}')`)
       .then(response => response.json())
-      .then(data => this.setState({ isNoteEnable: data.HasNotes }));
+      .then(data => this.setState({ isNoteEnable: data.HasNotes }))
+      .catch(error => console.error(error));
   }
 
   public render(): React.ReactNode {
@@ -87,7 +88,6 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
                 : <div className={'text'}>
                   <p> Drag and drop files here to upload</p></div>}
             </div>
-
           </div> : <div className='errorContainer'>
             <Icon className='errorIcone' iconName="error"></Icon>
             <p className='errorMessage'>Notes (including attachments) are disabled</p>
