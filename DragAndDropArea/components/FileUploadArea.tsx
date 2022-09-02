@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 import CrmService from '../services/CrmService';
+import { Icon } from '@fluentui/react/lib/Icon';
 
 export interface IFileUploadAreaProps { }
 
@@ -9,6 +10,8 @@ interface IFileUploadAreaState {
   isLoading: boolean;
   importedFilesCount: number
   filesCount: number;
+  contextPage: any;
+  isNoteEnable: boolean;
 }
 
 export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileUploadAreaState> {
@@ -20,6 +23,8 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
       isLoading: false,
       importedFilesCount: 0,
       filesCount: 0,
+      contextPage: props,
+      isNoteEnable: true,
     };
   }
 
@@ -37,43 +42,57 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
 
   async drop(event: React.DragEvent) {
     event.preventDefault();
-
     const files = event.dataTransfer?.files;
     this.setState({ isLoading: true, filesCount: Array.from(files).length });
     for (const file of Array.from(files)) {
       await CrmService.uploadFile(file);
       this.setState({ importedFilesCount: this.state.importedFilesCount + 1 });
     }
-
     this.setState({ dragCounter: 0, isLoading: false, importedFilesCount: 0 });
     CrmService.refreshTimeline();
   }
 
+  getNotes(entityTypeName: string) {
+    // @ts-ignore
+    fetch(`${parent.Xrm.Utility.getGlobalContext()
+      .getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${entityTypeName}')`)
+      .then(response => response.json())
+      .then(data => this.setState({ isNoteEnable: data.HasNotes }));
+  }
+
   public render(): React.ReactNode {
-    const { filesCount, importedFilesCount, isLoading } = this.state;
+    const { filesCount, importedFilesCount, isLoading, contextPage, isNoteEnable } = this.state;
+    const { entityTypeName } = contextPage;
+    this.getNotes(entityTypeName);
 
     return (
       <div className="draganddroparea">
-        <div className="container">
-          <div
-            onDragOver={this.dragOver.bind(this)}
-            onDragEnter={this.dragEnter.bind(this)}
-            onDragLeave={this.dragLeave.bind(this)}
-            onDrop={this.drop.bind(this)}
-            className={`dropArea 
+        { isNoteEnable
+          ? <div className="container">
+            <div
+              onDragOver={this.dragOver.bind(this)}
+              onDragEnter={this.dragEnter.bind(this)}
+              onDragLeave={this.dragLeave.bind(this)}
+              onDrop={this.drop.bind(this)}
+              className={`dropArea 
               ${this.state.dragCounter > 0 ? 'dropAreaHover' : ''}`}
-          >{isLoading
-              ? <>
-                <div className="textIcon">
-                  <p className='spinnerText'>
-                    { `importing ${importedFilesCount} of ${filesCount} files` }</p>
-                  <Spinner size={SpinnerSize.large} />
-                </div>
-              </>
-              : <div className={'text'}>
-                <p> Drag and drop files here to upload</p></div>}
+            >{isLoading
+                ? <>
+                  <div className="textIcon">
+                    <p className='spinnerText'>
+                      { `importing ${importedFilesCount} of ${filesCount} files` }</p>
+                    <Spinner size={SpinnerSize.large} />
+                  </div>
+                </>
+                : <div className={'text'}>
+                  <p> Drag and drop files here to upload</p></div>}
+            </div>
+
+          </div> : <div className='errorContainer'>
+            <Icon className='errorIcone' iconName="error"></Icon>
+            <p className='errorMessage'>Notes (including attachments) are disabled</p>
           </div>
-        </div>
+        }
       </div>
     );
   }
