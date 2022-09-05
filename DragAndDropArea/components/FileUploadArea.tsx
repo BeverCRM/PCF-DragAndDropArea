@@ -10,8 +10,8 @@ interface IFileUploadAreaState {
   isLoading: boolean;
   importedFilesCount: number
   filesCount: number;
-  contextPage: any;
-  isNoteEnable: boolean;
+  isDisabled: boolean;
+  isRenderedOneTime: boolean;
 }
 
 export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileUploadAreaState> {
@@ -23,8 +23,8 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
       isLoading: false,
       importedFilesCount: 0,
       filesCount: 0,
-      contextPage: props,
-      isNoteEnable: true,
+      isDisabled: true,
+      isRenderedOneTime: true,
     };
   }
 
@@ -45,30 +45,24 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     const files = event.dataTransfer?.files;
     this.setState({ isLoading: true, filesCount: Array.from(files).length });
     for (const file of Array.from(files)) {
-      await CrmService.uploadFile(file);
+      await CrmService.uploadFile(file, Array.from(files).length);
       this.setState({ importedFilesCount: this.state.importedFilesCount + 1 });
     }
     this.setState({ dragCounter: 0, isLoading: false, importedFilesCount: 0 });
     CrmService.refreshTimeline();
   }
 
-  getNotes(entityTypeName: string) {
-    // @ts-ignore
-    fetch(`${parent.Xrm.Utility.getGlobalContext()
-      .getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${entityTypeName}')`)
-      .then(response => response.json())
-      .then(data => this.setState({ isNoteEnable: data.HasNotes }))
-      .catch(error => console.error(error));
+  async getNotes() {
+    this.setState({ isDisabled: await CrmService.getNotes(), isRenderedOneTime: false });
   }
 
   public render(): React.ReactNode {
-    const { filesCount, importedFilesCount, isLoading, contextPage, isNoteEnable } = this.state;
-    const { entityTypeName } = contextPage;
-    this.getNotes(entityTypeName);
+    const { filesCount, importedFilesCount, isLoading, isDisabled } = this.state;
+    this.state.isRenderedOneTime ?? this.getNotes();
 
     return (
       <div className="draganddroparea">
-        { isNoteEnable
+        { isDisabled
           ? <div className="container">
             <div
               onDragOver={this.dragOver.bind(this)}

@@ -3,9 +3,10 @@ import FileHelper from '../helpers/FileHelper';
 
 let _context: ComponentFramework.Context<IInputs>;
 
-const notificationOption = {
-  errosCount: 0,
+const notificationOptions = {
+  errorsCount: 0,
   importedSucsessCount: 0,
+  filesCount: 0,
   details: '',
   message: '',
 };
@@ -15,39 +16,49 @@ export default {
     _context = context;
   },
 
-  async getEntitySetName(file: File) {
-    const buffer: ArrayBuffer = await FileHelper.readFileAsArrayBufferAsync(file);
-    const body: string = FileHelper.arrayBufferToBase64(buffer);
-    // @ts-ignore
-    const { entityTypeName, entityId } = _context.page;
-    const entityMetadata =
-    await _context.utils.getEntityMetadata(entityTypeName, entityId);
-
-    const data: any = {
-      'subject': '',
-      'filename': file.name,
-      'documentbody': body,
-      'objecttypecode': entityTypeName,
-    };
-    data[`objectid_${entityTypeName}@odata.bind`] =
-    `/${entityMetadata.EntitySetName}(${entityId})`;
-
-    return data;
+  async getEntitySetName(entityTypeName: string, entityId: string[]) {
+    return await _context.utils.getEntityMetadata(entityTypeName, entityId);
   },
 
-  async uploadFile(file: File) {
+  async getNotes() {
+    // @ts-ignore
+    const { entityTypeName } = _context.page;
+    const entityMetadataResponse =
+    // @ts-ignore
+     await fetch(`${parent.Xrm.Utility.getGlobalContext()
+       .getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${entityTypeName}')`);
+    const entityMetadata = await entityMetadataResponse.json();
+    return entityMetadata.HasNotes;
+  },
+
+  async uploadFile(file: File, filesCount: number) {
     try {
-      const data = await this.getEntitySetName(file);
+      notificationOptions.filesCount = filesCount;
+      const buffer: ArrayBuffer = await FileHelper.readFileAsArrayBufferAsync(file);
+      const body: string = FileHelper.arrayBufferToBase64(buffer);
+      // @ts-ignore
+      const { entityTypeName, entityId } = _context.page;
+      const entityMetadata = await this.getEntitySetName(entityTypeName, entityId);
+
+      const data: any = {
+        'subject': '',
+        'filename': file.name,
+        'documentbody': body,
+        'objecttypecode': entityTypeName,
+      };
+
+      data[`objectid_${entityTypeName}@odata.bind`] =
+    `/${entityMetadata.EntitySetName}(${entityId})`;
+
       await _context.webAPI.createRecord('annotation', data);
-      notificationOption.importedSucsessCount += 1;
+      notificationOptions.importedSucsessCount += 1;
     }
     catch (ex: any) {
       console.error(ex.message);
-      notificationOption.message = ex.message;
-      notificationOption.details += `
+      notificationOptions.details += `
       File Name -${file.name}
       Error message ${ex.message}`;
-      notificationOption.errosCount += 1;
+      notificationOptions.errorsCount += 1;
     }
   },
 
@@ -58,21 +69,24 @@ export default {
   },
 
   showNotificationPopup() {
-    if (notificationOption.errosCount === 0) {
-      const message = notificationOption.importedSucsessCount === 1
-        ? `${notificationOption.importedSucsessCount} file imported successfully`
-        : `${notificationOption.importedSucsessCount} files imported successfully`;
+    if (notificationOptions.errorsCount === 0) {
+      const message = notificationOptions.importedSucsessCount > 1
+        ? `${notificationOptions.importedSucsessCount} of ${notificationOptions.importedSucsessCount} files imported successfully`
+        : `${notificationOptions.importedSucsessCount} of ${notificationOptions.importedSucsessCount} file imported successfully`;
 
-      _context.navigation.openAlertDialog({ text: message });
-      notificationOption.importedSucsessCount = 0;
+      _context.navigation.openConfirmDialog({ text: message });
+      notificationOptions.importedSucsessCount = 0;
     }
     else {
-      notificationOption.errosCount >= 1 ? notificationOption.message += ` 
-       ${notificationOption.errosCount} errors`
-        : notificationOption.message += ` ${notificationOption.errosCount} error`;
+      notificationOptions.message = notificationOptions.errorsCount > 1
+        ? `${notificationOptions.errorsCount} 
+        of ${notificationOptions.filesCount} files errored during import`
+        : `${notificationOptions.errorsCount} 
+        of ${notificationOptions.filesCount} file errored during import`;
 
-      _context.navigation.openErrorDialog(notificationOption);
-      notificationOption.errosCount = 0;
+      _context.navigation.openErrorDialog(notificationOptions);
+      notificationOptions.errorsCount = 0, notificationOptions.importedSucsessCount = 0;
+      notificationOptions.details = '';
     }
   },
 };
