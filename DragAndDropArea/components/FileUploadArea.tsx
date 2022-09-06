@@ -24,7 +24,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
       importedFilesCount: 0,
       filesCount: 0,
       isDisabled: true,
-      isRenderedOneTime: true,
+      isRenderedOneTime: false,
     };
   }
 
@@ -58,7 +58,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
 
   public render(): React.ReactNode {
     const { filesCount, importedFilesCount, isLoading, isDisabled } = this.state;
-    this.state.isRenderedOneTime ?? this.getNotes();
+    if (!this.state.isRenderedOneTime) this.getNotes();
 
     return (
       <div className="draganddroparea">
