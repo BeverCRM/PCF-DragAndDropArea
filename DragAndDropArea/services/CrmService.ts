@@ -43,8 +43,8 @@ export default {
       const entitySetName = await this.getEntitySetName(entityTypeName);
 
       const data: any = {
-        'subject': _context.parameters.title.raw,
-        'notetext': _context.parameters.description.raw,
+        'subject': _context.parameters.noteTitle.raw,
+        'notetext': _context.parameters.noteDescription.raw,
         'filename': file.name,
         'documentbody': body,
         'objecttypecode': entityTypeName,
