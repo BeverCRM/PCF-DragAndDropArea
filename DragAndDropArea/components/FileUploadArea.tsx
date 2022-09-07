@@ -54,7 +54,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
 
   async checkNotes() {
     const hasNotes = await CrmService.hasNotes();
-    this.setState({ isDisabled: hasNotes, isRenderedOneTime: false });
+    this.setState({ isDisabled: hasNotes, isRenderedOneTime: true });
   }
 
   public render(): React.ReactNode {

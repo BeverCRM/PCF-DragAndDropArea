@@ -27,8 +27,7 @@ export default {
     // @ts-ignore
     const globalContext = Xrm.Utility.getGlobalContext();
     const entityMetadataResponse =
-     await fetch(`${globalContext.getClientUrl()}
-     /api/data/v${globalContext.getVersion()}/EntityDefinitions(LogicalName='${entityTypeName}')`);
+     await fetch(`${globalContext.getClientUrl()}/api/data/v${globalContext.getVersion()}/EntityDefinitions(LogicalName='${entityTypeName}')`);
     const entityMetadata = await entityMetadataResponse.json();
     return entityMetadata.HasNotes;
   },
