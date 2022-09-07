@@ -16,17 +16,19 @@ export default {
     _context = context;
   },
 
-  async getEntitySetName(entityTypeName: string, entityId: string[]) {
-    return await _context.utils.getEntityMetadata(entityTypeName, entityId);
+  async getEntitySetName(entityTypeName: string) {
+    const entityMetadata = await _context.utils.getEntityMetadata(entityTypeName);
+    return entityMetadata.EntitySetName;
   },
 
   async getNotes() {
     // @ts-ignore
     const { entityTypeName } = _context.page;
-    const entityMetadataResponse =
     // @ts-ignore
-     await fetch(`${parent.Xrm.Utility.getGlobalContext()
-       .getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${entityTypeName}')`);
+    const globalContext = Xrm.Utility.getGlobalContext();
+    const entityMetadataResponse =
+     await fetch(`${globalContext.getClientUrl()}
+     /api/data/v${globalContext.getVersion()}/EntityDefinitions(LogicalName='${entityTypeName}')`);
     const entityMetadata = await entityMetadataResponse.json();
     return entityMetadata.HasNotes;
   },
@@ -38,7 +40,7 @@ export default {
       const body: string = FileHelper.arrayBufferToBase64(buffer);
       // @ts-ignore
       const { entityTypeName, entityId } = _context.page;
-      const entityMetadata = await this.getEntitySetName(entityTypeName, entityId);
+      const entitySetName = await this.getEntitySetName(entityTypeName);
 
       const data: any = {
         'subject': _context.parameters.title.raw,
@@ -48,24 +50,21 @@ export default {
         'objecttypecode': entityTypeName,
       };
 
-      data[`objectid_${entityTypeName}@odata.bind`] =
-    `/${entityMetadata.EntitySetName}(${entityId})`;
+      data[`objectid_${entityTypeName}@odata.bind`] = `/${entitySetName}(${entityId})`;
 
       await _context.webAPI.createRecord('annotation', data);
       notificationOptions.importedSucsessCount += 1;
     }
     catch (ex: any) {
       console.error(ex.message);
-      notificationOptions.details += `
-      File Name -${file.name}
-      Error message ${ex.message}`;
+      notificationOptions.details += `File Name ${file.name} Error message ${ex.message}`;
       notificationOptions.errorsCount += 1;
     }
   },
 
   refreshTimeline() {
     // @ts-ignore
-    parent.Xrm.Page.getControl('Timeline')?.refresh();
+    Xrm.Page.getControl('Timeline')?.refresh();
     this.showNotificationPopup();
   },
 
