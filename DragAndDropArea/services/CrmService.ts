@@ -21,7 +21,7 @@ export default {
     return entityMetadata.EntitySetName;
   },
 
-  async getNotes() {
+  async hasNotes() {
     // @ts-ignore
     const { entityTypeName } = _context.page;
     // @ts-ignore

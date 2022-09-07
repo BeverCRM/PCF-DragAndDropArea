@@ -52,13 +52,14 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     CrmService.refreshTimeline();
   }
 
-  async getNotes() {
-    this.setState({ isDisabled: await CrmService.getNotes(), isRenderedOneTime: false });
+  async checkNotes() {
+    const hasNotes = await CrmService.hasNotes();
+    this.setState({ isDisabled: hasNotes, isRenderedOneTime: false });
   }
 
   public render(): React.ReactNode {
     const { filesCount, importedFilesCount, isLoading, isDisabled } = this.state;
-    if (!this.state.isRenderedOneTime) this.getNotes();
+    if (!this.state.isRenderedOneTime) this.checkNotes();
 
     return (
       <div className="draganddroparea">
