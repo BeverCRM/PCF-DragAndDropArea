@@ -23,11 +23,9 @@ export default {
 
   async hasNotes() {
     // @ts-ignore
-    const { entityTypeName } = _context.page;
-    // @ts-ignore
-    const globalContext = Xrm.Utility.getGlobalContext();
+    const contextPage = _context.page;
     const entityMetadataResponse =
-     await fetch(`${globalContext.getClientUrl()}/api/data/v${globalContext.getVersion()}/EntityDefinitions(LogicalName='${entityTypeName}')`);
+     await fetch(`${contextPage.getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${contextPage.entityTypeName}')`);
     const entityMetadata = await entityMetadataResponse.json();
     return entityMetadata.HasNotes;
   },
@@ -63,7 +61,7 @@ export default {
 
   refreshTimeline() {
     // @ts-ignore
-    Xrm.Page.getControl('Timeline')?.refresh();
+    parent.Xrm.Page.getControl('Timeline')?.refresh();
     this.showNotificationPopup();
   },
 
