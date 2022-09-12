@@ -29,6 +29,15 @@
 
   .draganddroparea .textIcon {
     width: 100%;
+    text-align: center;
+  }
+
+  .draganddroparea .spinnerText{
+    font-size: initial;
+  }
+
+  .draganddroparea .ms-Spinner{
+    margin-top: 6px;
   }
 
   .draganddroparea .text {
@@ -48,3 +57,13 @@
     padding-bottom: 23px;
     color: #939393;
   }
+
+  .draganddroparea .errorContainer{
+     margin-top: 10px;
+     text-align: center;
+  }
+
+  .draganddroparea .errorIcone{
+   color: red;
+   font-size: 35px;
+ }
