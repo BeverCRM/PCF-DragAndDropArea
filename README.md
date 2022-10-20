@@ -14,4 +14,4 @@ It will become drag and drop area
 
 [![youtube-timepicker](https://user-images.githubusercontent.com/90428984/196426042-fcf152d3-b6e4-4ebc-92df-d93d122762f5.png)](https://www.youtube.com/watch?v=GaZnOhW99xQ)
 
-[![Download zip](https://custom-icon-badges.herokuapp.com/badge/-Download-green?style=for-the-badge&logo=download&logoColor=white "Download zip")](https://marketplace.bevercrm.com/pcf-controls/1)
+[![download2](https://user-images.githubusercontent.com/90428984/196938550-84b45400-e64f-4444-a28d-b2de5e752165.png)](https://marketplace.bevercrm.com/pcf-controls/DragAndDropArea)
