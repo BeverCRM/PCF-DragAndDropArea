@@ -10,8 +10,8 @@ It will become drag and drop area
 
 ![dragandroparea-2](https://user-images.githubusercontent.com/90428984/196421578-72f0dfcc-3e1b-40e6-ab54-ff98c304470c.png)
 
+[![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/DragAndDropArea)
+
 # Demo Drag And Drop Area PCF Control
 
 [![youtube-timepicker](https://user-images.githubusercontent.com/90428984/196426042-fcf152d3-b6e4-4ebc-92df-d93d122762f5.png)](https://www.youtube.com/watch?v=GaZnOhW99xQ)
-
-[![download2](https://user-images.githubusercontent.com/90428984/196938550-84b45400-e64f-4444-a28d-b2de5e752165.png)](https://marketplace.bevercrm.com/pcf-controls/DragAndDropArea)
