@@ -21,11 +21,19 @@ export default {
     return entityMetadata.EntitySetName;
   },
 
+  async getEntityDisplayName() {
+    // @ts-ignore
+    const { entityTypeName } = _context.page;
+    const entityMetadata = await _context.utils.getEntityMetadata(entityTypeName);
+    return entityMetadata._displayName;
+  },
+
   async hasNotes() {
     // @ts-ignore
     const contextPage = _context.page;
     const entityMetadataResponse =
-     await fetch(`${contextPage.getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='${contextPage.entityTypeName}')`);
+     await fetch(`${contextPage.getClientUrl()}/api/data/v9.0/EntityDefinitions(LogicalName='` +
+     `${contextPage.entityTypeName}')`);
     const entityMetadata = await entityMetadataResponse.json();
     return entityMetadata.HasNotes;
   },
@@ -67,19 +75,21 @@ export default {
 
   showNotificationPopup() {
     if (notificationOptions.errorsCount === 0) {
-      const message = notificationOptions.importedSucsessCount > 1
-        ? `${notificationOptions.importedSucsessCount} of ${notificationOptions.importedSucsessCount} files imported successfully`
-        : `${notificationOptions.importedSucsessCount} of ${notificationOptions.importedSucsessCount} file imported successfully`;
+      const message = notificationOptions.filesCount === 1
+        ? `${notificationOptions.importedSucsessCount} of ` +
+        `${notificationOptions.importedSucsessCount} file imported successfully`
+        : `${notificationOptions.importedSucsessCount} of ` +
+        `${notificationOptions.importedSucsessCount} files imported successfully`;
 
       _context.navigation.openConfirmDialog({ text: message });
       notificationOptions.importedSucsessCount = 0;
     }
     else {
-      notificationOptions.message = notificationOptions.errorsCount > 1
+      notificationOptions.message = notificationOptions.filesCount === 1
         ? `${notificationOptions.errorsCount} 
-        of ${notificationOptions.filesCount} files errored during import`
+        of ${notificationOptions.filesCount} file errored during import`
         : `${notificationOptions.errorsCount} 
-        of ${notificationOptions.filesCount} file errored during import`;
+        of ${notificationOptions.filesCount} files errored during import`;
 
       _context.navigation.openErrorDialog(notificationOptions);
       notificationOptions.errorsCount = 0, notificationOptions.importedSucsessCount = 0;
