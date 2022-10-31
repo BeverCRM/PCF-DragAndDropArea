@@ -6,6 +6,7 @@ import { Icon } from '@fluentui/react/lib/Icon';
 export interface IFileUploadAreaProps { }
 
 interface IFileUploadAreaState {
+  entityName: string,
   dragCounter: number;
   isLoading: boolean;
   importedFilesCount: number
@@ -19,6 +20,7 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
     super(props);
 
     this.state = {
+      entityName: '',
       dragCounter: 0,
       isLoading: false,
       importedFilesCount: 0,
@@ -54,11 +56,12 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
 
   async checkNotes() {
     const hasNotes = await CrmService.hasNotes();
-    this.setState({ isDisabled: hasNotes, isRenderedOneTime: true });
+    const entityDisplayName = await CrmService.getEntityDisplayName();
+    this.setState({ entityName: entityDisplayName, isDisabled: hasNotes, isRenderedOneTime: true });
   }
 
   public render(): React.ReactNode {
-    const { filesCount, importedFilesCount, isLoading, isDisabled } = this.state;
+    const { filesCount, importedFilesCount, isLoading, isDisabled, entityName } = this.state;
     if (!this.state.isRenderedOneTime) this.checkNotes();
 
     return (
@@ -84,8 +87,9 @@ export class FileUploadArea extends React.Component<IFileUploadAreaProps, IFileU
                   <p> Drag and drop files here to upload</p></div>}
             </div>
           </div> : <div className='errorContainer'>
-            <Icon className='errorIcone' iconName="error"></Icon>
-            <p className='errorMessage'>Notes (including attachments) are disabled</p>
+            <Icon className='errorIcone' iconName="error"></Icon> <p className='errorMessage'>
+               Can&apos;t show control, because notes are not enabled for the {entityName} entity
+            </p>
           </div>
         }
       </div>
