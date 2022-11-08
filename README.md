@@ -18,4 +18,4 @@ Sub-grid will be changed into drag and drop area.
 
 # Demo Drag and Drop Area PCF Control
 
-[![youtube-timepicker](https://user-images.githubusercontent.com/90428984/196426042-fcf152d3-b6e4-4ebc-92df-d93d122762f5.png)](https://www.youtube.com/watch?v=GaZnOhW99xQ)
+[![youtube-timepicker](https://user-images.githubusercontent.com/90428984/200525093-73acdef3-b2b5-4ce5-984a-925bb2df8e1f.png)](https://www.youtube.com/watch?v=jvDp9eG5RCo&t=36s)
