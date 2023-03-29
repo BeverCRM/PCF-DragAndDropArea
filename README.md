@@ -14,8 +14,10 @@ Sub-grid will be changed into drag and drop area.
 
 ![dragandroparea-2](https://user-images.githubusercontent.com/60586462/197762283-234b974f-5cf0-4289-91e0-72a263c5470f.png)
 
+<!-- <IGNORE> -->
 [![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/DragAndDropArea)
 
 # Demo Drag and Drop Area PCF Control
 
 [![youtube-timepicker](https://user-images.githubusercontent.com/90428984/196426042-fcf152d3-b6e4-4ebc-92df-d93d122762f5.png)](https://www.youtube.com/watch?v=GaZnOhW99xQ)
+<!-- </IGNORE> -->
