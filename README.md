@@ -1,6 +1,6 @@
 # Drag and Drop Area
 
-This control allows you to upload file(s) to Dynamics 365 as a note attachment by drag and drop.\
+This control allows you to upload file(s) to Dynamics 365 as a note attachment by drag and drop. \
 You can add any sub-grid in the form (for example activities) and change its control to the “BeverControls.DragAndDropArea”.
 
   - **Note Title** – Title of notes added by this control.
