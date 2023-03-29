@@ -1,0 +1,16 @@
+name: Create a new release and upload the solution to Azure blob storage CI
+
+on:
+  push:
+    branches: release
+
+jobs:
+  main:
+    uses: BeverCRM/Workflow-Build-Release-Upload-CI/.github/workflows/build-release-upload-ci.yml@master
+    secrets: inherit
+    with:
+      control-title: Drag and Drop Area
+      control-description: This control allows to quickly upload Dynamics 365 note attachments by drag and drop.
+      control-thumbnail-url: https://user-images.githubusercontent.com/60586462/197762283-234b974f-5cf0-4289-91e0-72a263c5470f.png
+      control-youtube-video-url: https://www.youtube.com/watch?v=GaZnOhW99xQ
+      control-tags: Field, DragAndDrop
