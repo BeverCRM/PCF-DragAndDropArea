@@ -2,6 +2,6 @@
 
 * UI Changes
 
-## [v1.0.0](https://github.com/BeverCRM/PCF-DragAndDropArea/releases/tag/v1.0.0) (2022-11-08)
+## [v1.0.0](https://github.com/BeverCRM/PCF-DragAndDropArea/releases/tag/v1.0.0) (2022-11-18)
 
 This control allows to quickly upload Dynamics 365 note attachments by drag and drop.
