@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="BeverControls" constructor="DragAndDropArea" version="1.0.2" display-name-key="BeverControls.DragAndDropArea" description-key="This control allows the user to drag and drop files to entity record in the form. Dropped files will be added as a Dynamics 365 attachment. It’s a grid control, but any sub-grid in the form will work. " control-type="virtual" >
+  <control namespace="BeverControls" constructor="DragAndDropArea" version="1.0.2" display-name-key="BeverControls.DragAndDropArea" description-key="This control allows you to upload file(s) to Dynamics 365 as a note attachment by drag and drop." control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
 
