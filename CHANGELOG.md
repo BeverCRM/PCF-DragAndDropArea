@@ -1,3 +1,8 @@
+## [v1.0.2](https://github.com/BeverCRM/PCF-DragAndDropArea/releases/tag/v1.0.2) (2023-09-12)
+
+### Bug Fix
+* Sets the correct type to the Notes entity
+
 ## [v1.0.1](https://github.com/BeverCRM/PCF-DragAndDropArea/releases/tag/v1.0.1) (2023-03-29)
 
 ### UI Changes
