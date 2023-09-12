@@ -53,6 +53,7 @@ export default {
         'filename': file.name,
         'documentbody': body,
         'objecttypecode': entityTypeName,
+        'mimetype': file.type,
       };
 
       data[`objectid_${entityTypeName}@odata.bind`] = `/${entitySetName}(${entityId})`;
